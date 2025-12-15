@@ -1,5 +1,6 @@
 package com.mysite.backend.controller;
 
+import com.mysite.backend.exception.UserNotFoundException;
 import com.mysite.backend.model.User;
 import com.mysite.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,12 @@ public class UserController {
     @GetMapping("/users")
     List<User> getAllUsers(){
         return userRepository.findAll(); //db의 모든 유저를 리스트로 리턴
+    }
+
+    @GetMapping("/users/{id}")
+    User getUserById(@PathVariable Long id){
+        //id로 유저를 찾으면 유저 리턴 못찾으면 에러 발생
+        return userRepository.findById(id)
+                .orElseThrow(()->new UserNotFoundException(id));
     }
 }

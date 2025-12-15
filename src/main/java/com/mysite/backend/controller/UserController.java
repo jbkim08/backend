@@ -43,4 +43,13 @@ public class UserController {
                 })
                 .orElseThrow(()->new UserNotFoundException(id));
     }
+
+    @DeleteMapping("/users/{id}")
+    String deleteUser(@PathVariable Long id){
+        if(!userRepository.existsById(id)) {
+            throw new UserNotFoundException(id);
+        }
+        userRepository.deleteById(id);
+        return "유저 아이디: "+id+"는 삭제 되었습니다.";
+    }
 }
